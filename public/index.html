@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lobby</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/lobbystyle.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="scripts/lobby-script.js"></script>
+</head>
+<body>
+    <div class="card">
+        <div id="head"><h1>Welcome</h1></div>
+        <div id="spacer"></div>
+        <div class="card-text">Please enter a <em>nickname</em>. This will be visible to other users in the room. <b>Please choose a respectable name!</b></div>
+        <div id="spacer"></div>
+        <form action="chat" method="post">
+            <input type="text" autocomplete="off" name="handle" maxlength="16" placeholder="Handle" id="handle-text">
+            <br>
+            <a id="valid-input" href="/valid_handle.html"><span class="fa fa-exclamation-triangle" style="padding: 0px 10px 0px 0px; font-size: 64;"></span>Invalid handle. Click here for more info!</a>
+            <div id="spacer"></div>
+            <label class="switch">
+                <input type="checkbox" name="isPrivate" id="private-checkbox" value="on">
+                Join room by ID
+            </label>
+            <div id="private-section">
+                <div id="private-non-host-section">
+                    <div id="spacer"></div>
+                    <input type="text" autocomplete="off" name="roomId" maxlength="6" placeholder="Room ID (Required)" id="room-text">
+                    <div id="spacer"></div>
+                    Host a private room instead?
+                </div>
+                <div id="spacer"></div>
+                <label class="switch">
+                    <input type="checkbox" name="newHost" id="private-host-checkbox" value="on">
+                    Host new private room
+                </label>
+            </div>
+            <div id="spacer"></div>
+            <input type="submit" value="Continue" id="continue-btn">
+        </form>
+        <div id="spacer"></div>
+        <div class="foot-text">created by <b>Md. Afridi</b></div>
+    </div>
+</body>
+</html>

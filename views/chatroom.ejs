@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="styles/chatroomstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        let information = <%- params.info %>;
+    </script>
+    <script src="scripts/chatroom-script.js"></script>
+    <title>Chat Room</title>
+</head>
+
+<body>
+    <div class="chat-card">
+        <div class="head">
+            <h6>Your handle: 
+                <span>
+                    <em><div id="handle"><%= params.handle %></div></em>
+                </span>
+            </h6>
+            <h6>Active count: 
+                <span>
+                    <div id="active"><%= params.active %> / <%= params.max %></div>
+                </span>
+            </h6>
+        </div>
+        <h6 style="background-color: orangered; color: whitesmoke; padding: 10px 0px;">
+            Room Id:
+            <span>
+                <h3 style="color: white; padding: 0px 5px;" id="room-id"></h3>
+            </span>
+        </h6>
+        <div id="chat-window">
+            <div id="scroll-down">
+                <button id="scroll-down-btn"><span class="fa fa-chevron-down"></span></button>
+            </div>
+        </div>
+        <div id="input-section">
+            <input type="text" autocomplete="off" name="text" id="text-box">
+            <input type="button" value="Send" id="send-btn"></input>
+        </div>
+    </div>
+</body>
+
+</html>

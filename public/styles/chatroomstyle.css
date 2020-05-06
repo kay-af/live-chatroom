@@ -1,0 +1,212 @@
+* {
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    background-color: #eee;
+    height: 100%;
+    width: 100%;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #bb03;
+  border-radius: 18px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  opacity: 1;
+  background-color: orange;
+}
+
+.chat-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    height: 95%;
+    width: 95%;
+    max-width: 480px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 8px #bbb;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.chat-card .head {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: orange;
+    color: white;
+    text-align: start;
+    line-height: 1.5em;
+    padding: 12px;
+}
+
+#input-section {
+    display: flex;
+    flex-direction: row;
+    max-height: 240px;
+}
+
+#input-section #text-box {
+    flex: 1;
+    text-align: left;
+    resize: none;
+    overflow: auto;
+    border: 0;
+    padding: 8px 16px;
+    background-color: #eee;
+    font-size: 16px;
+    max-height: 120px;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.4s;
+}
+
+#input-section #text-box:hover {
+    background-color: #f7f7f7;
+}
+
+#input-section #send-btn {
+    font-size: 16px;
+    border: 0;
+    padding: 10px 22px;
+    background-color: orange;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.4s;
+}
+
+#input-section #send-btn:hover {
+    background-color: orangered;
+}
+
+#input-section #send-btn:active {
+    background-color: olivedrab;
+}
+
+*:focus {
+    outline: none;
+}
+
+#chat-window {
+    user-select: text;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    background-color: #fff;
+    margin: 4px 4px 4px 4px;
+    padding: 8px;
+}
+
+span {
+    display: inline-block;
+}
+
+.chat-bubble {
+    z-index: 0;
+    display: block;
+    margin: 10px 0px 10px 0px;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    min-width: 60%;
+    max-width: 90%;
+    text-align: left;
+    word-wrap: break-word;
+    border-radius: 8px;
+    box-shadow: 1px 1px 2px #ddd;
+    color: white;
+    font-size: 12px;
+    animation-name: popup;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}
+
+.chat-event {
+    font-size: 12px;
+    margin: 10px 0px 10px 0px;
+}
+
+.left-aligned {
+    background-color: rgb(255, 75, 99);
+    transform-origin: 0% 0%;
+    align-self: flex-start;
+}
+
+.right-aligned {
+    background-color: rgb(113, 113, 253);
+    transform-origin: 100% 0%;
+    align-self: flex-end;
+}
+
+@keyframes popup {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#spacer {
+    height: 5px;
+}
+
+.chat-bubble .bubble-head {
+    font-size: 10px;
+}
+
+.chat-bubble .bubble-footer {
+    user-select: none;
+    text-align: end;
+    font-size: 10px;
+    color: whitesmoke;
+}
+
+#scroll-down {
+    z-index: 100;
+    position: absolute;
+    display: block;
+    float: right;
+    right: 30px;
+    bottom: 70px;
+    user-select: none;
+}
+
+#scroll-down-btn {
+    cursor: pointer;
+  border: 0;
+  display: inline-block;
+  text-decoration: none;
+  background: orange;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  transition: background .4s;
+  cursor: pointer;
+}
+
+#scroll-down-btn:hover{
+    background: orangered;
+}
+
+#scroll-down-btn:active {
+    background: olivedrab;
+}
