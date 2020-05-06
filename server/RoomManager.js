@@ -69,6 +69,7 @@ class RoomManager {
     if (this.rooms[roomId]) {
       status.valid = true;
       status.isFull = this._isFull(this.rooms[roomId]);
+      status.private = this.rooms[roomId].isPrivate;
     } else {
       status.valid = false;
     }

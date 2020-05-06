@@ -34,11 +34,28 @@ app.post("/chat", urlencoded, (req, res) => {
     host: req.body.newHost == "on",
     roomId: req.body.roomId,
   };
+  
+  let renderChatroom = function () {
+    // If private and host then new private room
+    // If private but not host then old private room
+    // Else public room
+    let pvt = (info.private && info.host) || (info.private && roomManager.rooms[info.roomId].isPrivate);
+
+    res.render("chatroom", {
+      params: {
+        handle: req.body.handle,
+        active: 0,
+        max: roomManager.maxStrength,
+        info: JSON.stringify(info),
+        roomType: pvt?"Private room Id:":"Public room Id:"
+      },
+    });
+  }
+
+  // Get the status of the room requested
+  let roomStatus = roomManager.getStatus(info.roomId);
 
   if (info.private && !info.host) {
-    // Get the status of the room requested
-    let roomStatus = roomManager.getStatus(info.roomId);
-
     if (!roomStatus.valid) {
       res.render("error", {
         params: {
@@ -55,24 +72,10 @@ app.post("/chat", urlencoded, (req, res) => {
         },
       });
     } else {
-      res.render("chatroom", {
-        params: {
-          handle: req.body.handle,
-          active: 0,
-          max: roomManager.maxStrength,
-          info: JSON.stringify(info),
-        },
-      });
+      renderChatroom();
     }
   } else {
-    res.render("chatroom", {
-      params: {
-        handle: req.body.handle,
-        active: 0,
-        max: roomManager.maxStrength,
-        info: JSON.stringify(info),
-      },
-    });
+    renderChatroom();
   }
 });
 
