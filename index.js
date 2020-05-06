@@ -81,7 +81,7 @@ app.post("/chat", urlencoded, (req, res) => {
 
 // Start the server
 let server = app.listen(PORT, () => {
-  console.log("Server started at port " + PORT);
+  console.log("Server started");
 });
 
 // ================= Socket IO =================
