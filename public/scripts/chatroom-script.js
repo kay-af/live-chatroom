@@ -1,4 +1,6 @@
-const socket = io("https://thelivechatapp.herokuapp.com/", {
+const appServer = "https://thelivechatapp.herokuapp.com/";
+
+const socket = io(appServer, {
   reconnection: false,
   forceNew: true,
 });
@@ -80,7 +82,7 @@ socket.on("msg", (data) => {
 });
 
 function redirectToLobby() {
-  window.location.href = "https://thelivechatapp.herokuapp.com/";
+  window.location.href = appServer;
 }
 
 function sendMessage() {
