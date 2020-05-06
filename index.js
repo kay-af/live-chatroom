@@ -1,20 +1,23 @@
+// Imports
 const express = require("express");
 const socketio = require("socket.io");
 const rm = require("./server/RoomManager");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const path = require("path");
+// End imports
 
+// Ejs partial template sources
 const PARTIAL_EVENT = path.join(__dirname, "views/partials/chat-events.ejs");
 const PARTIAL_CHAT_BUBBLE = path.join(
   __dirname,
   "views/partials/chat-bubble.ejs"
 );
+// End Ejs partial template sources
 
+// Extra stuff
 const urlencoded = bodyParser.urlencoded({ extended: false });
-
 let roomManager = new rm();
-
 const PORT = process.env.PORT || 5000;
 
 // ================= Express App =================
@@ -33,12 +36,24 @@ app.post("/chat", urlencoded, (req, res) => {
   };
 
   if (info.private && !info.host) {
+    // Get the status of the room requested
     let roomStatus = roomManager.getStatus(info.roomId);
-    console.log(JSON.stringify(roomStatus));
+
     if (!roomStatus.valid) {
-      res.send("Unknown Room");
+      res.render("error", {
+        params: {
+          head: "Unknown Room!",
+          content: 'Unfortunately, the room you are trying to access does not exists'
+        }
+      });
     } else if (roomStatus.isFull) {
-      res.send("Room Full");
+      res.render("error", {
+        params: {
+          head: "Room is full!",
+          content:
+            "Unfortunately, the room you are trying to access is full",
+        },
+      });
     } else {
       res.render("chatroom", {
         params: {
@@ -61,6 +76,7 @@ app.post("/chat", urlencoded, (req, res) => {
   }
 });
 
+// Start the server
 let server = app.listen(PORT, () => {
   console.log("Server started at port " + PORT);
 });
@@ -75,16 +91,22 @@ io.on("connect", (socket) => {
 
     let room = roomManager.addclient(socket.id, data.options);
     if(!room) {
+      // This error might occur rarely.
+      // It indicates that either the room was deleted or the space exhausted within the timeframe of post and initialize
+      // This error occurs only for private rooms
       io.to(socket.id).emit("error", {});
       return; // Failed to join room
     }
 
+    // Join the room
     socket.join(room.id);
 
     console.log(
       "Initialize request from " + userHandle + " assigned to room " + room.id
     );
 
+    // Create the chat event to send
+    // example: abc123 has joined the room
     ejs.renderFile(
       PARTIAL_EVENT,
       {
@@ -100,9 +122,10 @@ io.on("connect", (socket) => {
       }
     );
 
+    // When a message is received
     socket.on("msg", (mdata) => {
-      console.log(mdata.handle + " Sent a message saying " + mdata.message);
 
+      // Create the chat bubble and send it to the room
       ejs.renderFile(
         PARTIAL_CHAT_BUBBLE,
         {
@@ -121,7 +144,10 @@ io.on("connect", (socket) => {
     });
 
     socket.on("disconnect", () => {
-      console.log("Client disconnected with handle: " + userHandle);
+      console.log("Client disconnected with handle: " + userHandle + " removed from room " + room.id);
+
+      // Create a chat event
+      // example: abc123 has left the room
       ejs.renderFile(
         PARTIAL_EVENT,
         {
@@ -137,9 +163,11 @@ io.on("connect", (socket) => {
         }
       );
 
+      // Remove the client when he/she disconnects
       roomManager.removeclient(socket.id, room);
       socket.leave(room.id);
       
+      // Update the meta data of the room
       io.to(room.id).emit("meta", {
         active: room.strength,
         max: roomManager.maxStrength,
@@ -147,6 +175,7 @@ io.on("connect", (socket) => {
       });
     });
 
+    // Update the meta data of the room whenever someone joins
     io.to(room.id).emit("meta", {
       active: room.strength,
       max: roomManager.maxStrength,

@@ -13,11 +13,11 @@
 <body>
     <div class="card">
         <div id="head" style="background-color: red;">
-            <h1>Unknown Room!</h1>
+            <h1><%= params.head %></h1>
         </div>
         <div id="spacer"></div>
         <div class="card-text">
-            Unfortunately, the room you are trying to enter does not exists.
+            <%= params.content %>
         </div>
     </div>
 </body>

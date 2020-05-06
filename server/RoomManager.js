@@ -1,6 +1,10 @@
 const supercharge = require("@supercharge/strings");
+// Util to generate a random room id
 const strutil = supercharge();
 
+/**
+ * Manages the room using a simple room queue and a map of room id mapped rooms
+ */
 class RoomManager {
   constructor() {
     this.rooms = {};
@@ -15,15 +19,20 @@ class RoomManager {
    * @returns The assigned room
    */
   addclient(clientId, options) {
+    // Fetch the room based on the client options
     let room = this._getroom(options);
 
+    // If the room is null, then an abrupt error has occured within the timeframe of post and initialize
     if(!room) return null;
 
+    // Add this client to this room
     room.clientIds.push(clientId);
     room.strength++;
 
+    // Only push the room to queue if not full and not private
     if(!room.isPrivate && !this._isFull(room)) this.roomQueue.push(room);
 
+    // Return the room
     return room;
   }
 
@@ -33,9 +42,13 @@ class RoomManager {
    * @param room The room object associated with the client
    */
   removeclient(clientId, room) {
+    // Remove the client from this room
+    // room is provided as a paaram to avoid taking more vars and avoid the search process
     room.strength--;
+    // Remove the client
     room.clientIds = room.clientIds.filter((e) => e !== clientId);
 
+    // If the room is still usable, push it to queue if not private
     if (room.strength > 0) {
         if(!room.isPrivate)
             this.roomQueue.push(room);
@@ -49,7 +62,6 @@ class RoomManager {
    * @returns Room status
    */
   getStatus(roomId) {
-    console.log(JSON.stringify(this.rooms[roomId]));
     let status = {
       id: roomId,
     };
@@ -99,10 +111,10 @@ class RoomManager {
   _createNewRoom() {
     let roomID = strutil.random(6);
     let newRoom = {
-    id: roomID, // UID of the room
-    strength: 0, // Current strength
-    clientIds: [], // The associated clients
-    isPrivate: false,
+        id: roomID, // UID of the room
+        strength: 0, // Current strength
+        clientIds: [], // The associated clients
+        isPrivate: false
     };
     this.rooms[newRoom.id] = newRoom;
     return newRoom;
